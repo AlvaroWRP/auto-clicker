@@ -1,0 +1,22 @@
+QCheckBox {
+    background-color: #63A69F;
+    color: white;
+    padding: 8px;
+}
+
+QCheckBox::indicator {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    border: 2px solid #63A69F;
+    width: 40px;
+    height: 20px;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #5BC641;
+    border: 2px solid #5BC641;
+}
+
+QLineEdit {
+    width: 2em;
+}
