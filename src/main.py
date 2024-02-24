@@ -21,7 +21,7 @@ if __name__ == '__main__':
     bottom_layout = BottomLayout()
     window.main_layout.addLayout(bottom_layout)
 
-    buttons_layout = ButtonsLayout(top_layout)
+    buttons_layout = ButtonsLayout(top_layout, middle_layout, bottom_layout, app)
     window.main_layout.addLayout(buttons_layout)
 
     read_qss_file(app)
