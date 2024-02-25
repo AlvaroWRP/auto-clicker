@@ -2,8 +2,9 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon, QKeyEvent, QKeySequence
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QLabel
 
+from utils.json import save_hotkey, load_hotkey
 from utils.paths import ICON_FILE_PATH
-from utils.pyinstaller_media import resource_path
+from utils.pyinstaller import resource_path
 
 
 class SettingsDialog(QDialog):
@@ -26,6 +27,7 @@ class SettingsDialog(QDialog):
 
     def _add_widgets(self):
         dark_mode_check_box, topmost_check_box = self._create_widgets()
+
         self.main_layout.addWidget(dark_mode_check_box)
         self.main_layout.addWidget(topmost_check_box)
 
@@ -74,7 +76,11 @@ class HotkeyDialog(QDialog):
         return QLabel('Type to choose another key')
 
     def _create_hotkey_text_field(self):
-        return QLabel()
+        hotkey = load_hotkey()
+
+        label = QLabel()
+        label.setText(hotkey)
+        return label
 
     def keyPressEvent(self, arg__1: QKeyEvent):
         key = arg__1.key()
@@ -82,5 +88,7 @@ class HotkeyDialog(QDialog):
 
         self.hotkey_text_field.setText(key_text)
         self.key_signal.emit(key_text)
+
+        save_hotkey(key_text)
 
         return arg__1.ignore()

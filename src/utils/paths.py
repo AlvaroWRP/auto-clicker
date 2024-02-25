@@ -9,3 +9,5 @@ ICON_FILE_PATH = r'images\icon.ico'
 ACTIVATE_AUDIO_FILE_PATH = r'sounds\activate_clicker.wav'
 
 DEACTIVATE_AUDIO_FILE_PATH = r'sounds\deactivate_clicker.wav'
+
+SETTINGS_FILE_PATH = Path(__file__).parent.parent / r'settings.json'

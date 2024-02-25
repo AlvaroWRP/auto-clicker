@@ -2,9 +2,10 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QPushButton, QApplication
 
-from settings import SettingsDialog, HotkeyDialog
+from dialogs import SettingsDialog, HotkeyDialog
 
 from utils.clicker_functions import start
+from utils.json import load_hotkey
 
 if TYPE_CHECKING:
     from layouts import TopLayout, MiddleLayout, BottomLayout
@@ -17,7 +18,9 @@ class StartStopButton(QPushButton):
         ):
         super().__init__()
 
-        self.setText('Start (hotkey)')
+        hotkey = load_hotkey()
+
+        self.setText(f'Start ({hotkey})')
         self.clicked.connect(lambda: start(top_layout, middle_layout, bottom_layout))
 
     def hotkey_received(self, hotkey: str):

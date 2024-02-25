@@ -7,4 +7,4 @@ if TYPE_CHECKING:
 
 
 def start(top_layout: 'TopLayout', middle_layout: 'MiddleLayout', bottom_layout: 'BottomLayout'):
-    print(top_layout.time_between_clicks_input.text())
+    print()
