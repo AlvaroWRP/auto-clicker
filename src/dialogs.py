@@ -5,11 +5,14 @@ from PySide6.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QLabel
 from utils.json import save_hotkey, load_hotkey
 from utils.paths import ICON_FILE_PATH
 from utils.pyinstaller import resource_path
+from utils.strings import *
 
 
 class SettingsDialog(QDialog):
     def __init__(self):
         super().__init__()
+
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)  # type: ignore
 
         self._set_icon_and_title()
 
@@ -23,7 +26,7 @@ class SettingsDialog(QDialog):
         icon = QIcon(icon_path)
 
         self.setWindowIcon(icon)
-        self.setWindowTitle('Auto Clicker - Settings')
+        self.setWindowTitle(SETTINGS_STRING)
 
     def _add_widgets(self):
         dark_mode_check_box, topmost_check_box = self._create_widgets()
@@ -32,8 +35,8 @@ class SettingsDialog(QDialog):
         self.main_layout.addWidget(topmost_check_box)
 
     def _create_widgets(self):
-        dark_mode_check_box = self._create_check_box('Toggle dark mode')
-        topmost_check_box = self._create_check_box('Set window as topmost')
+        dark_mode_check_box = self._create_check_box(TOGGLE_DARK_MODE_STRING)
+        topmost_check_box = self._create_check_box(SET_WINDOW_AS_TOPMOST_STRING)
         return dark_mode_check_box, topmost_check_box
 
     def _create_check_box(self, text: str):
@@ -48,6 +51,8 @@ class HotkeyDialog(QDialog):
     def __init__(self):
         super().__init__()
 
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)  # type: ignore
+
         self._set_icon_and_title()
 
         self.main_layout = QVBoxLayout()
@@ -60,7 +65,7 @@ class HotkeyDialog(QDialog):
         icon = QIcon(icon_path)
 
         self.setWindowIcon(icon)
-        self.setWindowTitle('Auto Clicker - Change hotkey')
+        self.setWindowTitle(CHANGE_HOTKEY_STRING)
 
     def _add_widgets(self):
         explanation_label = self._create_widgets()
@@ -73,7 +78,7 @@ class HotkeyDialog(QDialog):
         return self._create_explanation_label()
 
     def _create_explanation_label(self):
-        return QLabel('Type to choose another key')
+        return QLabel(TYPE_TO_CHOOSE_ANOTHER_KEY_STRING)
 
     def _create_hotkey_text_field(self):
         hotkey = load_hotkey()
@@ -90,5 +95,7 @@ class HotkeyDialog(QDialog):
         self.key_signal.emit(key_text)
 
         save_hotkey(key_text)
+
+        self.close()
 
         return arg__1.ignore()

@@ -4,8 +4,11 @@ from PySide6.QtWidgets import (QGridLayout, QLabel, QLineEdit, QComboBox,
                                QHBoxLayout, QButtonGroup, QApplication)
 
 from buttons import StartStopButton, SettingsButton, HotkeyButton, CloseButton
+from mouse_tracker import MouseTracker
 from radio_group import RadioGroup
+
 from utils.regex import FLOAT_REGEX
+from utils.strings import *
 
 
 class TopLayout(QHBoxLayout):
@@ -24,10 +27,12 @@ class TopLayout(QHBoxLayout):
 
     def _create_widgets(self):
         self.time_between_clicks_input = self._create_time_between_clicks_input()
+        self.time_between_clicks_input.setText(DEFAULT_TIME_BETWEEN_CLICKS_VALUE_STRING)
+
         self.mouse_button_input = self._create_mouse_button_input()
 
-        time_between_clicks_label = self._create_label('Time between clicks (seconds):')
-        mouse_button_label = self._create_label('Mouse button:')
+        time_between_clicks_label = self._create_label(TIME_BETWEEN_CLICKS_STRING)
+        mouse_button_label = self._create_label(MOUSE_BUTTON_STRING)
 
         return time_between_clicks_label, mouse_button_label
 
@@ -46,7 +51,7 @@ class TopLayout(QHBoxLayout):
 
     def _create_mouse_button_input(self):
         combo_box = QComboBox()
-        combo_box.addItems(['Left', 'Middle', 'Right'])
+        combo_box.addItems([LEFT_STRING, MIDDLE_STRING, RIGHT_STRING])
         return combo_box
 
 
@@ -78,7 +83,7 @@ class MiddleLayout(QHBoxLayout):
 
     def _group_radio_buttons(self):
         group = QButtonGroup()
-        return RadioGroup(group, 'Repeat until hotkey press', 'Repeat N times')
+        return RadioGroup(group, REPEAT_UNTIL_HOTKEY_PRESS_STRING, REPEAT_N_TIMES_STRING)
 
     def _create_repeat_n_times_input(self):
         input = QLineEdit()
@@ -96,6 +101,8 @@ class BottomLayout(QHBoxLayout):
     def __init__(self):
         super().__init__()
 
+        self.mouse_tracker = MouseTracker(self)
+
         self._add_widgets()
 
     def _add_widgets(self):
@@ -108,14 +115,14 @@ class BottomLayout(QHBoxLayout):
         self.addWidget(self.y_coordinate_input)
 
     def _create_widgets(self):
+        self.x_coordinate_input = self._create_coordinate_input()
+        self.y_coordinate_input = self._create_coordinate_input()
+
         radio_button_group = self._group_radio_buttons()
         self._link_group_to_input(radio_button_group)
 
-        x_coordinate_label = self._create_coordinate_label('X:')
-        y_coordinate_label = self._create_coordinate_label('Y:')
-
-        self.x_coordinate_input = self._create_coordinate_input()
-        self.y_coordinate_input = self._create_coordinate_input()
+        x_coordinate_label = self._create_coordinate_label(X_STRING)
+        y_coordinate_label = self._create_coordinate_label(Y_STRING)
 
         return radio_button_group, x_coordinate_label, y_coordinate_label
 
@@ -123,12 +130,20 @@ class BottomLayout(QHBoxLayout):
         group.button2.toggled.connect(self._toggle_enabled_input)
 
     def _toggle_enabled_input(self, checked: bool):
+        self.x_coordinate_input.setEnabled(checked)
         self.x_coordinate_input.setReadOnly(checked)
+
+        self.y_coordinate_input.setEnabled(checked)
         self.y_coordinate_input.setReadOnly(checked)
+
+        if checked:
+            self.mouse_tracker.show_tracker()
+        else:
+            self.mouse_tracker.hide_tracker()
 
     def _group_radio_buttons(self):
         group = QButtonGroup()
-        return RadioGroup(group, 'Current location', 'Get coordinates')
+        return RadioGroup(group, CURRENT_LOCATION_STRING, GET_COORDINATES_STRING)
 
     def _create_coordinate_label(self, text: str):
         return QLabel(text)

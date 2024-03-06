@@ -6,6 +6,7 @@ from dialogs import SettingsDialog, HotkeyDialog
 
 from utils.clicker_functions import start
 from utils.json import load_hotkey
+from utils.strings import *
 
 if TYPE_CHECKING:
     from layouts import TopLayout, MiddleLayout, BottomLayout
@@ -20,18 +21,18 @@ class StartStopButton(QPushButton):
 
         hotkey = load_hotkey()
 
-        self.setText(f'Start ({hotkey})')
+        self.setText(f'{START_STRING} ({hotkey})')
         self.clicked.connect(lambda: start(top_layout, middle_layout, bottom_layout))
 
     def hotkey_received(self, hotkey: str):
-        self.setText(f'Start ({hotkey})')
+        self.setText(f'{START_STRING} ({hotkey})')
 
 
 class SettingsButton(QPushButton):
     def __init__(self):
         super().__init__()
 
-        self.setText('Settings')
+        self.setText(SETTINGS_STRING)
 
         self.clicked.connect(self._open_settings_dialog)
 
@@ -46,7 +47,7 @@ class HotkeyButton(QPushButton):
 
         self.start_stop_button = start_stop_button
 
-        self.setText('Change hotkey')
+        self.setText(CHANGE_HOTKEY_STRING)
 
         self.clicked.connect(self._open_hotkey_dialog)
 
@@ -62,6 +63,6 @@ class CloseButton(QPushButton):
 
         self.app = app
 
-        self.setText('Close clicker')
+        self.setText(CLOSE_PROGRAM_STRING)
 
         self.clicked.connect(self.app.quit)

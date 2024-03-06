@@ -11,12 +11,12 @@ def apply_changes(settings: dict[str, str | bool]):
 def load_hotkey():
     with open(SETTINGS_FILE_PATH, encoding='utf-8') as file:
         settings = json.load(file)
-        hotkey = settings['hotkey']
-        return hotkey
+        return settings['hotkey']
 
 
 def save_hotkey(hotkey: str):
     with open(SETTINGS_FILE_PATH, encoding='utf-8') as file:
         settings = json.load(file)
         settings['hotkey'] = hotkey
+
         apply_changes(settings)
