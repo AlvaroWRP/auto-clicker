@@ -14,7 +14,7 @@ QCheckBox::indicator {
 
 QCheckBox::indicator:checked {
     background-color: #5BC641;
-    border: 2px solid #5BC641;
+    border: 2px solid #5BC631;
 }
 
 QLineEdit {
